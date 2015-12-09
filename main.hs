@@ -60,8 +60,7 @@ type Message = String
 -- Functions
 
 tapCount :: [UserInput] -> Presses
-tapCount [] = 0
-tapCount ((digit, n):inputs) = n + tapCount inputs
+tapCount = foldr ((+) . snd) 0
 
 inputsForMessage :: Phone -> String -> [UserInput]
 inputsForMessage = concatMap . inputFor
