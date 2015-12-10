@@ -30,6 +30,9 @@ phone = Phone [
 
 
 
+
+
+
 -- Data
 
 conversation :: [Message]
@@ -46,6 +49,9 @@ conversation = [
 
 
 
+
+
+
 -- Types
 
 data Phone = Phone Buttons
@@ -57,16 +63,45 @@ type Message = String
 
 
 
+
+
+
 -- Functions
 
+
+
+-- Calculate the total number of taps of an input chain.
 tapCount :: [UserInput] -> Presses
 tapCount = foldr ((+) . snd) 0
 
-inputsForMessage :: Phone -> String -> [UserInput]
-inputsForMessage = concatMap . inputFor
 
-inputFor :: Phone -> Char -> [UserInput]
-inputFor (Phone buttons) = go buttons
+
+-- Find the most popular character in a message.
+popestChar :: Message -> Char
+popestChar =
+  -- The value is the second tuple element.
+  snd .
+  -- Fold the list to the most popular.
+  maximumBy (\ (n1,_) (n2,_) -> compare n1 n2) .
+  -- Calculate the length of each sub list. We need to track
+  -- the value itself too because that is what we will return
+  -- at the end.
+  map (\ xs@(x:_) -> (length xs, x)) .
+  -- group splits the list at every non-equal boundary. The
+  -- result is easy to then count how long each sub list is
+  -- which is our metric for popularity.
+  group .
+  -- By sorting we make same characters neighbors which
+  -- is great for the next step, group.
+  sort
+
+
+
+inputsForMessage :: Phone -> String -> [UserInput]
+inputsForMessage = concatMap . inputForChar
+
+inputForChar :: Phone -> Char -> [UserInput]
+inputForChar (Phone buttons) = go buttons
   where
 
     go :: Buttons -> Char -> [UserInput]
