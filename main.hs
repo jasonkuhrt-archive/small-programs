@@ -71,12 +71,19 @@ type Message = String
 
 
 -- Calculate the total number of taps of an input chain.
+
 tapCount :: [UserInput] -> Presses
 tapCount = foldr ((+) . snd) 0
 
 
 
 -- Find the most popular character in a message.
+--
+-- WARNING | Partial Function
+-- If given an empty message then popestChar will throw
+-- an exception as per the constraints of the book not
+-- having introduced Maybe types yet.
+
 popestChar :: Message -> Char
 popestChar =
   -- The value is the second tuple element.
