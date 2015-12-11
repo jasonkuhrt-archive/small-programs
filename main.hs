@@ -83,13 +83,18 @@ tapCount = foldr ((+) . snd) 0
 -- If given an empty message then popestChar will throw
 -- an exception as per the constraints of the book not
 -- having introduced Maybe types yet.
-
+--
+-- The value is the second tuple element.
 popestChar :: Message -> Char
-popestChar =
-  -- The value is the second tuple element.
-  snd .
+popestChar = snd . commonestChar
+
+
+
+commonestChar :: (Ord a) => [a] -> (Int, a)
+commonestChar =
   -- Fold the list to the most popular.
   maximumBy (\ (n1,_) (n2,_) -> compare n1 n2) .
+  -- maximumBy (\ (n1,_) (n2,_) -> compare n1 n2) .
   -- Calculate the length of each sub list. We need to track
   -- the value itself too because that is what we will return
   -- at the end.
@@ -101,6 +106,20 @@ popestChar =
   -- By sorting we make same characters neighbors which
   -- is great for the next step, group.
   sort
+
+
+
+popestCharInConvo :: [Message] -> Char
+popestCharInConvo =
+  snd .
+  commonestChar .
+  filter (/= ' ') .
+  concat
+
+
+
+charCost :: Char -> Presses
+charCost = tapCount . inputForChar phone
 
 
 
