@@ -109,6 +109,17 @@ commonestChar =
 
 
 
+popestWordInConvo :: [String] -> String
+popestWordInConvo =
+  snd .
+  maximumBy (\ (n1,_) (n2,_) -> compare n1 n2) .
+  map (\ xs@(x:_) -> (length xs, x)) .
+  group .
+  sort .
+  concatMap words
+
+
+
 popestCharInConvo :: [Message] -> Char
 popestCharInConvo =
   snd .
