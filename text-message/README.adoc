@@ -1,0 +1,67 @@
+:toc: macro
+:toc-title:
+
+# Text Message Inputs
+
+toc::[]
+
+
+
+## About
+
+This is a simple program that, given the text of a conversation, will return the interface taps required to produce it. This programs assumes a world of non-smart phones.
+
+This program idea is an exercise from the book link:http://haskellbook.com[Haskell Programming from first principals]. My implementation herein and its sharing is for my personal learning of Haskell.
+
+
+
+## Specification
+
+Assume a phone interface like:
+
+```
+----------------------------
+| 1      | 2 abc  | 3 def  |
+----------------------------
+| 4 ghi  | 5 jkl  | 6 mno  |
+----------------------------
+| 7 pqrs | 8 tuv  | 9 wxyz |
+----------------------------
+| * ^    | 0 + _  | # .,   |
+----------------------------
+```
+
+* To write a capital start by pressing `*` then the character you want a capital of.
+
+* `0` is the space bar.
+
+* To write a digit you press the button of that digit one time more than the number of characters it represents. So pressing `1` which has zero characters would result in `1`, pressing `2` would result in `a`. To get `2` the user would have to press `2` four times because it represents 3 characters.
+
+
+
+
+#### Example
+
+The following conversation:
+
+```haskell
+[ "Hey",
+  "wut",
+  "Lol",
+  "huh",
+  "rofL",
+  "bye",
+  "lol" ]
+```
+
+Would be produced by the following interface input:
+
+```haskell
+[ [('*',1),('4',2),('3',2),('9',3)],
+  [('9',1),('8',2),('8',1)],
+  [('*',1),('5',3),('6',3),('5',3)]
+  [('4',2),('8',2),('4',2)],
+  [('7',3),('6',3),('3',3),('*',1),('5',3)],
+  [('2',2),('9',3),('3',2)],
+  [('5',3),('6',3),('5',3)] ]
+```
