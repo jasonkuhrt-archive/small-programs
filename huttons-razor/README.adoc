@@ -1,0 +1,18 @@
+:toc: macro
+:toc-title:
+
+# Hutton's Razor
+
+toc::[]
+
+
+
+## About
+
+TODO
+
+
+
+## Specification
+
+TODO
